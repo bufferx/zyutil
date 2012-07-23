@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2012 Zhang ZY<http://idupx.blogspot.com/> 
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+'''工具类测试
+'''
+
+import os
+import sys
+
+import lib.tornado as tornado
+from lib.tornado.options import define, options
+
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+
+options.app_name = 'PYUTIL_LOG_TEST'
+options.log_level = 'DEBUG'
+options.log_path = '/tmp'
+
+from log import g_logger
+
+def http_test():
+    from http import HttpUtil
+
+    s = u'你好,世界{"k1":xxx, "k2":999}'
+    s_encode = HttpUtil.urlencode(s)
+    print 'OriUrl: %s' % s
+    print 'Encode: %s' % s_encode
+    print 'Decode: %s' % HttpUtil.urldecode(s_encode)
+    print 'Done'
+    pass
+
+def common_test():
+    from common import CommonUtil
+    print CommonUtil.to_string(u'你好,世界')
+    print CommonUtil.to_string(u'你好,世界', 'GBK')
+    print CommonUtil.to_string(object)
+    print CommonUtil.to_string(1024)
+    print CommonUtil.to_unicode(u'你好,世界')
+    print CommonUtil.to_unicode(CommonUtil.to_string(u'你好,世界', 'GBK'), 'GBK')
+    s = 'jo4MDgwIinBhcmFt\t0ZWxpZCI6ICI0\ngsICJobATU4Iiwg\nInRhc2tb\x20DM2NDX19'
+    print s
+    s_ = CommonUtil.re_str_replace(s, '\s', '')
+    print s_
+    print CommonUtil.fibonacci_num(0) 
+    print CommonUtil.fibonacci_num(1) 
+    print CommonUtil.fibonacci_num(2) 
+    print CommonUtil.fibonacci_num(3) 
+    print CommonUtil.fibonacci_num(4) 
+    print CommonUtil.fibonacci_num(5) 
+    print CommonUtil.fibonacci_num(6) 
+    print CommonUtil.fibonacci_num(7) 
+    print CommonUtil.fibonacci_num(8) 
+    print CommonUtil.fibonacci_num(9) 
+    print CommonUtil.fibonacci_num(10) 
+    pass
+
+def main():
+    #http_test()
+    common_test()
+
+if __name__ == '__main__':
+    main()
