@@ -22,6 +22,7 @@ import os
 import sys
 import time
 import re
+import htmlentitydefs
 
 import assembly
 
@@ -75,6 +76,21 @@ class CommonUtil(object):
         s = CommonUtil.to_string(s)
         strinfo = re.compile(pattern)
         return strinfo.sub(dist, s)
+
+    @staticmethod
+    def html_unescape(string):
+        """Un-escapes an HTML-escaped string.
+        """
+        #Reference: http://www.php2python.com/wiki/function.htmlspecialchars-decode/
+        htmlentitydefs.entitydefs['nbsp'] = ' ' 
+
+        def inner_html_unescape(m, defs=htmlentitydefs.entitydefs):
+            try:
+                return defs[m.group(1)]
+            except KeyError, e:
+                return m.group(0)
+
+        return re.sub(r"&(\w+?);", inner_html_unescape, string) 
 
     @staticmethod
     def time_format(_time=time.localtime(), pattern = '%Y-%m-%d %H:%M:%S'):

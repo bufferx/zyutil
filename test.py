@@ -55,6 +55,7 @@ def common_test():
     print s
     s_ = CommonUtil.re_str_replace(s, '\s', '')
     print s_
+    print CommonUtil.html_unescape('&lt;node&gt;&nbsp;value&nbsp;&lt;/node&gt;')
     print CommonUtil.fibonacci_num(0) 
     print CommonUtil.fibonacci_num(1) 
     print CommonUtil.fibonacci_num(2) 
