@@ -82,7 +82,7 @@ class CommonUtil(object):
         """Un-escapes an HTML-escaped string.
         """
         #Reference: http://www.php2python.com/wiki/function.htmlspecialchars-decode/
-        htmlentitydefs.entitydefs['nbsp'] = ' ' 
+        htmlentitydefs.entitydefs['nbsp'] = ' '
 
         def inner_html_unescape(m, defs=htmlentitydefs.entitydefs):
             try:
