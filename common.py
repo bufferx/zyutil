@@ -125,6 +125,55 @@ class CommonUtil(object):
                 a, b = b, c
             return c
 
+    @staticmethod
+    def wdrr_schedule(dic):
+        '''Weighted Deficit Round Robin
+        Reference: http://my.oschina.net/fqing/blog/79161
+                   http://en.wikipedia.org/wiki/Weighted_round_robin
+                   http://blog.csdn.net/hxg130435477/article/details/8012608
+        Example:
+            dic = {
+                    'a': {
+                        'w': 5,
+                        'cc': 0,
+                        'sc': 0,
+                        },
+                    'b': {
+                        'w': 3,
+                        'cc': 0,
+                        'sc': 0,
+                        },
+                    'c': {
+                        'w': 2,
+                        'cc': 0,
+                        'sc': 0,
+                        },
+                    }
+            for i in xrange(10):
+                print CommonUtil.wdrr_schedule(dic)
+            print dic
+        '''
+        total = 0
+        the_key = None
+        for k, item in dic.iteritems():
+            assert 'w' in item # weight/quantum
+            assert 'cc' in item # credit counter
+            assert 'sc' in item # schedule counter
+
+            weight = item['w']
+
+            item['cc'] += weight
+            total += weight
+
+            if the_key is None or (
+                    dic[the_key]['cc'] < item['cc']):
+                    the_key = k
+            pass
+        dic[the_key]['cc'] -= total
+        dic[the_key]['sc'] += 1
+
+        return the_key
+
 def main():
     pass
 
