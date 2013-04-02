@@ -43,30 +43,17 @@ class HttpUtil(object):
         return urllib.unquote(value)
 
     @staticmethod
-    def get_remote_ip(request):
-        '''get real ip for nginx reverse proxy server
-        HTTPRequest可以获取nginx作为反向代理透传的真实IP
-        '''
-        result = request.remote_ip
-        #if 'X-Forwarded-For' in request.headers:
-            #result = request.headers['X-Forwarded-For']
-        #@TODO: support others proxy server, such as apache/f5 and so on
-
-        return result
-
-    @staticmethod
     def get_header_string(request):
         '''header增加反向代理透传的真实IP
         '''
-        remote_ip = HttpUtil.get_remote_ip(request) 
-        request.headers['Real-Clientip'] = remote_ip
+        request.headers['Real-Clientip'] = request.remote_ip
         return request.headers
 
     @staticmethod
     def validate_ip(request, _pass=None):
         '''验证IP白名单
         '''
-        remote_ip = HttpUtil.get_remote_ip(request)
+        remote_ip = request.remote_ip
         ip_list = \
             re.findall('(192.168.0.\d{1,3}|127.0.0.\d{1,3})', remote_ip, re.DOTALL)
         if not ip_list:

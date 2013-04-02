@@ -22,6 +22,7 @@ import os
 import sys
 import time
 import re
+import htmlentitydefs
 
 import assembly
 
@@ -77,6 +78,21 @@ class CommonUtil(object):
         return strinfo.sub(dist, s)
 
     @staticmethod
+    def html_unescape(string):
+        """Un-escapes an HTML-escaped string.
+        """
+        #Reference: http://www.php2python.com/wiki/function.htmlspecialchars-decode/
+        htmlentitydefs.entitydefs['nbsp'] = ' '
+
+        def inner_html_unescape(m, defs=htmlentitydefs.entitydefs):
+            try:
+                return defs[m.group(1)]
+            except KeyError, e:
+                return m.group(0)
+
+        return re.sub(r"&(\w+?);", inner_html_unescape, string) 
+
+    @staticmethod
     def time_format(_time=time.localtime(), pattern = '%Y-%m-%d %H:%M:%S'):
         return time.strftime(pattern, _time)
 
@@ -108,6 +124,55 @@ class CommonUtil(object):
                 c = a + b 
                 a, b = b, c
             return c
+
+    @staticmethod
+    def wdrr_schedule(dic):
+        '''Weighted Deficit Round Robin
+        Reference: http://my.oschina.net/fqing/blog/79161
+                   http://en.wikipedia.org/wiki/Weighted_round_robin
+                   http://blog.csdn.net/hxg130435477/article/details/8012608
+        Example:
+            dic = {
+                    'a': {
+                        'w': 5,
+                        'cc': 0,
+                        'sc': 0,
+                        },
+                    'b': {
+                        'w': 3,
+                        'cc': 0,
+                        'sc': 0,
+                        },
+                    'c': {
+                        'w': 2,
+                        'cc': 0,
+                        'sc': 0,
+                        },
+                    }
+            for i in xrange(10):
+                print CommonUtil.wdrr_schedule(dic)
+            print dic
+        '''
+        total = 0
+        the_key = None
+        for k, item in dic.iteritems():
+            assert 'w' in item # weight/quantum
+            assert 'cc' in item # credit counter
+            assert 'sc' in item # schedule counter
+
+            weight = item['w']
+
+            item['cc'] += weight
+            total += weight
+
+            if the_key is None or (
+                    dic[the_key]['cc'] < item['cc']):
+                    the_key = k
+            pass
+        dic[the_key]['cc'] -= total
+        dic[the_key]['sc'] += 1
+
+        return the_key
 
 def main():
     pass

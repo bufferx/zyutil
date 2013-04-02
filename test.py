@@ -53,8 +53,16 @@ def common_test():
     print CommonUtil.to_unicode(CommonUtil.to_string(u'你好,世界', 'GBK'), 'GBK')
     s = 'jo4MDgwIinBhcmFt\t0ZWxpZCI6ICI0\ngsICJobATU4Iiwg\nInRhc2tb\x20DM2NDX19'
     print s
+    print id(s)
     s_ = CommonUtil.re_str_replace(s, '\s', '')
+    s = s.replace('\t', '')
+    print s
+    print id(s)
+    print id(s_)
     print s_
+    print CommonUtil.html_unescape('&lt;node&gt;&nbsp;value&nbsp;&lt;/node&gt;')
+    print CommonUtil.re_str_replace('line0<br>newline', '\<br\>', '\n')
+    print CommonUtil.re_str_replace(' encoding="utf-16"?>', 'encoding=\"utf-16\"', 'encoding="utf-8"')
     print CommonUtil.fibonacci_num(0) 
     print CommonUtil.fibonacci_num(1) 
     print CommonUtil.fibonacci_num(2) 
@@ -66,6 +74,27 @@ def common_test():
     print CommonUtil.fibonacci_num(8) 
     print CommonUtil.fibonacci_num(9) 
     print CommonUtil.fibonacci_num(10) 
+    # round robin
+    dic = {
+            'a': {
+                'w': 5,
+                'cc': 0,
+                'sc': 0,
+                },
+            'b': {
+                'w': 3,
+                'cc': 0,
+                'sc': 0,
+                },
+            'c': {
+                'w': 2,
+                'cc': 0,
+                'sc': 0,
+                },
+            }
+    for i in xrange(113):
+        print CommonUtil.wdrr_schedule(dic)
+    print dic
     pass
 
 def main():
