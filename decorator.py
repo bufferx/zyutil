@@ -42,7 +42,7 @@ def time_it(_logger):
             r = method(*args, **kwargs)
             delta_time = 1000.0 * (time.time() - start_time)
 
-            _logger.info('Func[%s] elapsed time: %.2fms' % (method.func_name, delta_time))
+            _logger.debug('Func[%s] elapsed time: %.2fms' % (method.func_name, delta_time))
 
             return r
         return wrapper
