@@ -126,7 +126,7 @@ class CommonUtil(object):
             return c
 
     @staticmethod
-    def wdrr_schedule(dic):
+    def wdrr_schedule(dic, need_sc=False):
         '''Weighted Deficit Round Robin
         Reference: http://my.oschina.net/fqing/blog/79161
                    http://en.wikipedia.org/wiki/Weighted_round_robin
@@ -170,7 +170,9 @@ class CommonUtil(object):
                     the_key = k
             pass
         dic[the_key]['cc'] -= total
-        dic[the_key]['sc'] += 1
+
+        if need_sc:
+            dic[the_key]['sc'] += 1
 
         return the_key
 

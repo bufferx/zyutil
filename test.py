@@ -93,7 +93,7 @@ def common_test():
                 },
             }
     for i in xrange(113):
-        print CommonUtil.wdrr_schedule(dic)
+        print CommonUtil.wdrr_schedule(dic, need_sc=True)
     print dic
     pass
 
