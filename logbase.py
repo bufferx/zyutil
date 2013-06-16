@@ -23,15 +23,15 @@ import sys
 import logging
 import logging.handlers
 
-def get_logger(app_name='main', f_path='/tmp/zy.log', log_level='debug'):
+def get_logger(app_name='main', f_path='/tmp/zy.log', log_level='DEBUG'):
     if not app_name or not f_path: 
         return None
 
     _logger = logging.getLogger(app_name)
-    if log_level == 'debug':
+    try:
+        _logger.setLevel(getattr(logging, log_level.upper()))
+    except AttributeError as e:
         _logger.setLevel(logging.DEBUG)
-    else:
-        _logger.setLevel(logging.INFO)
 
     bind_time_rotating(_logger, f_path)
 
