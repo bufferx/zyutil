@@ -15,7 +15,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''Dedup Bucket
+'''Memory Buffer
 '''
 
 from heapq import heappush
@@ -24,28 +24,26 @@ import time
 
 import assembly
 
-class DedupBucket(object):
+class MemoryBuffer(object):
 
-    __slots__ = ['_bucket', '_heap', '_capacity', '_dedup_time']
+    __slots__ = ['_bucket', '_heap', '_capacity']
 
     @property
     def size(self):
         return len(self._bucket)
 
-    def __init__(self, dedup_time=10, capacity=1024):
-        assert dedup_time > 0
+    def __init__(self, capacity=1024):
         assert capacity   > 0
 
-        self._dedup_time  = dedup_time
         self._capacity    = capacity
         self._bucket      = {}
         self._heap        = []
 
-    def get_data(self, k):
+    def get(self, k):
         if k not in self._bucket:
             return None
 
-        now  = int(time.time())
+        now  = time.time()
         data = self._bucket[k] 
 
         if data['t'] >= now:
@@ -53,7 +51,7 @@ class DedupBucket(object):
 
         return None
 
-    def add_data(self, k, v, now=None):
+    def set(self, k, v, expire_time):
         def remove_data():
             while self._heap:
                 _et, _k = heappop(self._heap)
@@ -63,10 +61,8 @@ class DedupBucket(object):
             pass
 
         if now is None:
-            now  = int(time.time())
+            now  = time.time()
 
-        expire_time = now + self._dedup_time
-        
         if len(self._bucket) > self._capacity:
             remove_data()
 
