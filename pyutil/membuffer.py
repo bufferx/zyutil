@@ -60,9 +60,6 @@ class MemoryBuffer(object):
                     break
             pass
 
-        if now is None:
-            now  = time.time()
-
         if len(self._bucket) > self._capacity:
             remove_data()
 
