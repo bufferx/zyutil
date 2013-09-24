@@ -43,14 +43,14 @@ kwargs = {}
 major, minor = sys.version_info[:2]
 python_26 = (major > 2 or (major == 2 and minor >= 6))
 
-version = "1.0.0"
+version = "1.0.1"
 
 if major >= 3:
     import setuptools  # setuptools is required for use_2to3
     kwargs["use_2to3"] = True
 
 distutils.core.setup(
-    name="bufferx_pyutil",
+    name="bf4x_pyutil",
     version=version,
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
