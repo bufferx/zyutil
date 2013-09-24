@@ -50,7 +50,7 @@ if major >= 3:
     kwargs["use_2to3"] = True
 
 distutils.core.setup(
-    name="pyutil",
+    name="bufferx_pyutil",
     version=version,
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
