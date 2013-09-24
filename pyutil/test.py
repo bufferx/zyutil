@@ -20,6 +20,7 @@
 
 import os
 import sys
+import time
 
 import lib.tornado as tornado
 from lib.tornado.options import define, options
@@ -31,6 +32,28 @@ options.log_level = 'DEBUG'
 options.log_path = '/tmp'
 
 from log import g_logger
+
+
+def mb_test():
+    from time_dedup_buffer import TimeDedupBuffer
+    mb = TimeDedupBuffer(2)
+    mb.add('K0', '0')
+    mb.add('K0', '0')
+    mb.add('K0', '0')
+    mb.add('K1', '0')
+    mb.add('K2', '0')
+    mb.add('K1', '0')
+    mb.add('K0', '0')
+    mb.add('K2', '0')
+    mb.add('K1', '0')
+    mb.add('K3', '0')
+    mb.add('K0', '0')
+    mb.add('K0', '0')
+    print mb.stats
+    print [timeout for timeout in mb._timeouts]
+    print mb._buckets
+    print mb.get('K3')
+    print mb.get('K0')
 
 def http_test():
     from http import HttpUtil
@@ -92,14 +115,15 @@ def common_test():
                 'sc': 0,
                 },
             }
-    for i in xrange(113):
+    for i in xrange(10):
         print CommonUtil.wdrr_schedule(dic, need_sc=True)
     print dic
     pass
 
 def main():
     #http_test()
-    common_test()
+    #common_test()
+    mb_test()
 
 if __name__ == '__main__':
     main()
