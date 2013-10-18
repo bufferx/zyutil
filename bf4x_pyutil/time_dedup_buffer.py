@@ -57,7 +57,7 @@ class TimeDedupBuffer(object):
         if data['t'] > now:
             return data['v']
 
-        del self._buckets[k]
+        self.delete(k)
         return None
 
     def add(self, k, v):
@@ -85,7 +85,8 @@ class TimeDedupBuffer(object):
 
     def delete(self, k):
         try:
+            self._timeouts.remove(k)
             del self._buckets[k]
             return 'DELETED'
-        except KeyError as e:
+        except KeyError, ValueError as e:
             return 'NOT_FOUND'
