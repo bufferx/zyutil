@@ -45,6 +45,22 @@ class TimeDedupBuffer(object):
         self._timeouts    = deque(maxlen=capacity + 1)
         self._timeout     = timeout
 
+    def _set(self, k, v):
+        def remove_data():
+            k = self._timeouts.popleft()
+            del self._buckets[k]
+
+        if len(self._buckets) >= self._capacity:
+            remove_data()
+
+        data = {}
+        data['t'] = time() + self._timeout
+        data['v'] = v
+
+        self._timeouts.append(k)
+
+        self._buckets[k] = data
+
     def get(self, k):
         '''Retrieval command
         '''
@@ -63,23 +79,19 @@ class TimeDedupBuffer(object):
     def add(self, k, v):
         '''Storage command
         '''
-        def remove_data():
-            k = self._timeouts.popleft()
-            del self._buckets[k]
-
         if k in self._buckets:
             return 'NOT_STORED'
 
-        if len(self._buckets) >= self._capacity:
-            remove_data()
+        self._set(k, v)
 
-        data = {}
-        data['t'] = time() + self._timeout
-        data['v'] = v
+        return 'STORED'
 
-        self._timeouts.append(k)
+    def set(self, k, v):
+        '''Storage command
+        '''
+        self.delete(k)
 
-        self._buckets[k] = data
+        self._set(k, v)
 
         return 'STORED'
 
