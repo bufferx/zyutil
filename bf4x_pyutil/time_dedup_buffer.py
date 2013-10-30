@@ -79,10 +79,12 @@ class TimeDedupBuffer(object):
     def add(self, k, v):
         '''Storage command
         '''
-        if k in self._buckets:
+        data = self.get(k)
+
+        if data is not None:
             return 'NOT_STORED'
 
-        self._set(k, v)
+        self.set(k, v)
 
         return 'STORED'
 
