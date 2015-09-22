@@ -1,12 +1,12 @@
-pyutil
+zypyutil
 ==========
 
-pyutil is a set of tools collection for python programming, 
-such as CommUtil, HttpUtil, Log, DB and so on. 
+zypyutil is stand for zy's pyutil, it is a set of tools collection for python programming,
+such as CommUtil, HttpUtil, Log, DB and so on.
 
 Usage
 ------------
-* Reference test.py file 
+* Reference test.py file
 
 Test
 ------------
