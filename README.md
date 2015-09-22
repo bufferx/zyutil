@@ -1,7 +1,7 @@
-zypyutil
+zyutil
 ==========
 
-zypyutil is stand for zy's pyutil, it is a set of tools collection for python programming,
+zyutil is stand for zy's pyutil, it is a set of tools collection for python programming,
 such as CommUtil, HttpUtil, Log, DB and so on.
 
 Usage
